@@ -1,0 +1,38 @@
+---
+ - hosts: all-nodes
+   become: true
+   tasks:
+
+    - name: Add Signing Key
+      ansible.builtin.rpm_key:
+        key:  https://packages.cloud.google.com/yum/doc/yum-key.gpg
+        state: present
+
+    - name: Add Docker Repository (yum)
+      ansible.builtin.yum_repository:
+        name: docker-ce
+        description: docker official repository
+        baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-$basearch
+        enabled: true
+        gpgkey:
+         - https://packages.cloud.google.com/yum/doc/yum-key.gpg
+         - https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+        exclude:
+           - kubernetes
+
+    - name: Update Repository Index
+      ansible.builtin.yum:
+        update_cache: yes
+
+    - name: Install Kubelet, Kubectl, Kubeadm
+      ansible.builtin.yum:
+        name:
+          - kubelet
+          - kubectl
+          - kubeadm
+        exclude: kubernetes
+
+#Requires reboot
+    - name: Disable SELinux
+      ansible.posix.selinux:
+         state: disabled

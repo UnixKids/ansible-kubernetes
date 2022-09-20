@@ -1,0 +1,5 @@
+IPADDR: $(ip addr | grep -v 'docker' | awk '/inet/{print $2}' | egrep "^172|^192|^10" | cut -d'/' -f1)
+NODENAME: $(hostname -f)
+KUBEADM: kubeadm init --apiserver-advertise-address={{ IPADDR }} --apiserver-cert-extra-sans={{ IPADDR }} --pod-network-cidr=192.168.0.0/16 --node-name {{ NODENAME }} --ignore-preflight-errors Swap
+REMOTE_FILE:  /root/kubeadm-token.txt
+LOCAL_FILE: ""

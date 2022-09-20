@@ -1,0 +1,12 @@
+# Deploy additional Kubernetes Objects that make life easier
+# Only needs to be deployed from one master node if multiple are available; however, additional configuration might be needed within the Cluster
+---
+ - hosts: master-nodes
+   become: true
+   tasks:
+
+     - name: Deploying Calico to the Cluster (Networking)
+       ansible.builtin.shell: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+
+     - name: Deploying MetalLB to the Cluster (LoadBalancer)
+       ansible.builtin.shell: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.5/config/manifests/metallb-native.yaml

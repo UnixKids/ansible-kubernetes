@@ -1,0 +1,35 @@
+---
+ - hosts: master-nodes
+   become: true
+   vars_files:
+     - variables.yaml
+
+   tasks:
+     - name: Initializing Control Plan (Master-Nodes)
+       ansible.builtin.shell: "{{ KUBEADM }}"
+
+     - name: Creating Kubeconfig Directory for root user
+       ansible.builtin.file:
+         path: /root/.kube/
+         state: directory
+         mode: '0755'
+
+     - name: Copying Kubeconfig
+       ansible.builtin.copy:
+         src: /etc/kubernetes/admin.conf
+         dest: /root/.kube/config
+         owner: root
+         group: root
+         mode: '0600'
+         remote_src: yes
+
+     - name: Generating Kubernetes Token (Master-Nodes)
+       ansible.builtin.shell: kubeadm token create --print-join-command > "{{ REMOTE_FILE }}"
+       register: kubeadm_token
+
+# Token generates the kuebadm command used to join the Cluster
+     - name: Copying Kubeadm Token (Local)
+       ansible.builtin.fetch:
+         src: "{{ REMOTE_FILE }}"
+         dest: "{{ LOCAL_FILE }}"
+         flat: yes

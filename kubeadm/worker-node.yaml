@@ -1,0 +1,21 @@
+---
+ - hosts: worker-nodes
+   become: true
+   vars_files:
+     - variables.yaml
+
+   tasks:
+
+     - name: Transferring Token File to Worker Nodes
+       ansible.builtin.copy:
+        src: "{{ LOCAL_FILE }}"
+        dest: "{{ REMOTE_FILE }}"
+        owner: root
+        group: root
+        mode: '700'
+
+     - name: Joining Worker Nodes to Cluster
+       ansible.builtin.shell: /bin/bash "{{ REMOTE_FILE }}"
+
+
+

@@ -1,0 +1,15 @@
+---
+ - hosts: all-nodes
+   become: true
+   tasks:
+
+     - name: Resetting Kubeadm on All Nodes
+       ansible.builtin.shell: kubeadm reset -f
+
+     - name: Uninstalling Kubelet, Kubectl, Kubeadm
+       ansible.builtin.yum:
+         name:
+           - kubelet
+           - kubectl
+           - kubeadm
+         state: absent
