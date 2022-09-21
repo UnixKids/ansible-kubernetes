@@ -2,7 +2,6 @@
  - hosts: all-nodes
    become: true
    tasks:
-
     - name: Add Signing Key
       ansible.builtin.rpm_key:
         key:  https://packages.cloud.google.com/yum/doc/yum-key.gpg

@@ -3,7 +3,6 @@
    become: true
    vars_files:
      - variables.yaml
-
    tasks:
      - name: Initializing Control Plan (Master-Nodes)
        ansible.builtin.shell: "{{ KUBEADM }}"
@@ -22,6 +21,10 @@
          group: root
          mode: '0600'
          remote_src: yes
+
+#Networking needs to be deployed before worker nodes join the Cluster
+     - name: Deploying Calico to the Cluster (Networking)
+       ansible.builtin.shell: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
 
      - name: Generating Kubernetes Token (Master-Nodes)
        ansible.builtin.shell: kubeadm token create --print-join-command > "{{ REMOTE_FILE }}"

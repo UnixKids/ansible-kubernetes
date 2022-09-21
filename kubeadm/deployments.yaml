@@ -4,9 +4,5 @@
  - hosts: master-nodes
    become: true
    tasks:
-
-     - name: Deploying Calico to the Cluster (Networking)
-       ansible.builtin.shell: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
-
      - name: Deploying MetalLB to the Cluster (LoadBalancer)
        ansible.builtin.shell: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.5/config/manifests/metallb-native.yaml

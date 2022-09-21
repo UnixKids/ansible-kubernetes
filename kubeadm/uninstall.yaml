@@ -5,6 +5,8 @@
 
      - name: Resetting Kubeadm on All Nodes
        ansible.builtin.shell: kubeadm reset -f
+       tags:
+         - reset
 
      - name: Uninstalling Kubelet, Kubectl, Kubeadm
        ansible.builtin.yum:
