@@ -28,6 +28,7 @@
           - containerd.io
           - docker-compose-plugin
         state: latest
+
 #This file causes an issue when initializing kubeadm
     - name: Remove containerd toml
       ansible.builtin.file:
