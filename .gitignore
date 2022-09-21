@@ -2,3 +2,4 @@ token/*
 ansible.cfg
 hosts
 kubeadm-token.txt
+.idea*
