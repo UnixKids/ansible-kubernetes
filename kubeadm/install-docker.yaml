@@ -2,7 +2,6 @@
  - hosts: all-nodes
    become: true
    tasks:
-
     - name: Add signing key
       ansible.builtin.rpm_key:
         key: https://download.docker.com/linux/centos/gpg
